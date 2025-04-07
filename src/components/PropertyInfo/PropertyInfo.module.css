@@ -1,0 +1,125 @@
+.content {
+  padding: 1rem;
+  background-color: #fff;
+}
+
+.subContent {
+  border-bottom: 1px solid #dedede;
+  padding: 1rem 0;
+}
+
+.subContent:last-child {
+  border-bottom: none;
+}
+
+.content h1 {
+  font-size: 1.25rem;
+  text-align: left;
+}
+
+/* Carousel style */
+
+.carouselWrapper {
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  padding: 1rem 0;
+}
+
+.carousel {
+  display: flex;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.slide {
+  width: 25%;
+  max-width: 100%;
+}
+
+.slide img {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0 1rem;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.navButton:hover {
+  color: #0077ff;
+}
+
+/* Facilities style */
+
+.facilitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.facilitiesGroup {
+  text-align: left;
+}
+
+.facilitiesGroup ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Contact info list */
+.contactInfoGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.contactInfoList {
+  list-style: none;
+  text-align: left;
+}
+
+/* Property policies styles */
+.policiesList {
+  list-style: none;
+  text-align: left;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  padding: 0 1rem;
+}
+
+.policiesList > li {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #dedede;
+}
+
+.policiesList > li:last-child {
+  border-bottom: none;
+}
+
+.policiesList h2 {
+  font-size: 1.1rem;
+  padding: 0;
+  margin: 0;
+}
+
+.policiesList h3 {
+  font-size: 1rem;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 769px) {
+  .slide {
+    width: 100%;
+  }
+}
