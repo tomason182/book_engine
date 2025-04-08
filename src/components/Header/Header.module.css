@@ -1,20 +1,22 @@
 .header {
+  padding: 2rem 0;
+  background-color: var(--primary-color);
+}
+
+.header .content {
+  max-width: 1280px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.25rem 1.5rem;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  flex-wrap: wrap;
   gap: 1rem;
-  background-color: #fefefe;
 }
 
 .header h1 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
-  color: #333;
+  color: #fff;
 }
 
 .options {
@@ -24,8 +26,7 @@
 
 .options select {
   padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
+  font-size: 0.875rem;
   border-radius: 6px;
   background-color: #f9f9f9;
   color: #333;
