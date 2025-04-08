@@ -1,10 +1,15 @@
 import styles from "./GuestForm.module.css";
 
-export default function GuestForm() {
+export default function GuestForm({ setIndex }) {
+  function onClick() {
+    setIndex(0);
+  }
   return (
     <form className={styles.guestForm}>
       <div className={styles.header}>
-        <button>&#x2190;</button>
+        <button type="button" onClick={onClick}>
+          &#x2190;
+        </button>
         <h2>Enter your details</h2>
       </div>
       <div className={styles.formGroup}>
