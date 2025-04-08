@@ -1,10 +1,14 @@
 import "./App.css";
+import { useState } from "react";
 import Header from "./components/Header/Header.jsx";
 import DateRangePicker from "./components/DateRangePicker/DateRangePicker.jsx";
+import RoomSelection from "./components/RoomSelection/RoomSelection.jsx";
 import PropertyInfo from "./components/PropertyInfo/PropertyInfo.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 
 function App() {
+  const [index, setIndex] = useState(1);
+
   const propertyInfo = {
     id: 10,
     property_name: "La Casa de Tomas",
@@ -73,11 +77,21 @@ function App() {
     },
   };
 
+  const contentToDisplay = [
+    <DateRangePicker setIndex={setIndex} key="dateRangePicker" />,
+    <RoomSelection
+      propertyInfo={propertyInfo}
+      policies={policies}
+      key="roomSelection"
+    />,
+  ];
+
   return (
     <>
       <Header name={propertyInfo.property_name} />
       <main className="mainContent">
-        <DateRangePicker />
+        {contentToDisplay[index]}
+
         <PropertyInfo propertyInfo={propertyInfo} policies={policies} />
       </main>
       <Footer />
