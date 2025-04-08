@@ -1,9 +1,11 @@
-import styles from "./RoomSelection.module.css";
+import styles from "./Booking.module.css";
 import { formatToLocaleDate } from "../../utils/dateFormattingHelper";
 import { useEffect, useState } from "react";
 import Spinner from "../Spinner/Spinner";
+import GuestForm from "../GuestForm/GuestForm";
+import PropTypes from "prop-types";
 
-export default function RoomSelection() {
+export default function Booking() {
   const [availabilityResult, setAvailabilityResult] = useState({
     totalNights: 0,
     currencies: {
@@ -20,6 +22,7 @@ export default function RoomSelection() {
   });
   const [loading, setLoading] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState([]);
+  const [index, setIndex] = useState(1);
 
   useEffect(() => {
     setAvailabilityResult({
@@ -59,79 +62,8 @@ export default function RoomSelection() {
     });
   }, []);
 
-  const roomAmenities = [
-    {
-      id: 2,
-      amenities: ["wifi", "breakfast", "tv", "air_conditioning", "heating"],
-    },
-    {
-      id: 7,
-      amenities: ["wifi", "breakfast", "tv", "air_conditioning", "heating"],
-    },
-    {
-      id: 10,
-      amenities: [
-        "wifi",
-        "breakfast",
-        "tv",
-        "air_conditioning",
-        "heating",
-        "kitchen",
-      ],
-    },
-  ];
-
-  const roomImages = [
-    {
-      id: 2,
-      images: [
-        "https://placehold.co/300",
-        "https://placehold.co/300",
-        "https://placehold.co/300",
-      ],
-    },
-    {
-      id: 7,
-      images: [
-        "https://placehold.co/300",
-        "https://placehold.co/300",
-        "https://placehold.co/300",
-      ],
-    },
-    {
-      id: 10,
-      images: [
-        "https://placehold.co/300",
-        "https://placehold.co/300",
-        "https://placehold.co/300",
-      ],
-    },
-  ];
-
   const checkIn = formatToLocaleDate("2025-01-25");
   const checkOut = formatToLocaleDate("2025-01-28");
-
-  const handleRoomSelection = e => {
-    const { name, value } = e.target;
-    const roomId = parseInt(name);
-    const quantity = parseInt(value);
-    if (quantity === 0) {
-      setSelectedRooms(prevRooms =>
-        prevRooms.filter(room => room.id !== roomId)
-      );
-      return;
-    }
-    const existingRoom = selectedRooms.find(room => room.id === roomId);
-    if (existingRoom) {
-      setSelectedRooms(prevRooms =>
-        prevRooms.map(room =>
-          room.id === roomId ? { ...room, quantity: quantity } : room
-        )
-      );
-    } else {
-      setSelectedRooms(prevRooms => [...prevRooms, { id: roomId, quantity }]);
-    }
-  };
 
   if (loading) return <Spinner />;
 
@@ -153,71 +85,15 @@ export default function RoomSelection() {
         </div>
       ) : (
         <div className={styles.rightContainer}>
-          {availabilityResult.roomList.map(room => {
-            const roomImage = roomImages.find(image => image.id === room.id);
-            const roomAmenity = roomAmenities.find(
-              amenity => amenity.id === room.id
-            );
-            const availability = room.availability;
-
-            return (
-              <div key={room.id} className={styles.roomCard}>
-                <div className={styles.roomDetails}>
-                  <div className={styles.roomImage}>
-                    {/* Here we need an image slider, not a single image */}
-                    <img
-                      src={
-                        roomImage && roomImage.images.length > 0
-                          ? roomImage.images[0]
-                          : "https://placehold.co/400"
-                      }
-                      alt={room.description}
-                    />
-                  </div>
-                  <div className={styles.details}>
-                    <h3>{room.description}</h3>
-                    <span>
-                      {room.type === "private" ? "Private" : "Dormitory"}{" "}
-                      {room.max_occupancy}
-                    </span>
-                    <ul>
-                      {roomAmenity &&
-                        roomAmenity.amenities.map((amenity, index) => (
-                          <li key={index}>&#x1F5F8; {amenity}</li>
-                        ))}
-                    </ul>
-                  </div>
-                </div>
-                <div className={styles.priceDetails}>
-                  <div className={styles.rates}>
-                    <h4>Standard Rate</h4>
-                    <p>Deposits:</p>
-                    <p>Cancellations:</p>
-                  </div>
-
-                  <div className={styles.price}>
-                    <p>
-                      {availabilityResult.currencies.base_currency}{" "}
-                      {room.totalRate}
-                    </p>
-                    <span>{availabilityResult.totalNights} nights</span>
-                    <select
-                      id="roomSelection"
-                      name={room.id}
-                      onChange={handleRoomSelection}
-                    >
-                      <option value={0}>Select</option>
-                      {Array.from({ length: availability }, (_, index) => (
-                        <option key={index} value={index + 1}>
-                          {index + 1}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {index === 0 ? (
+            <RoomSelection
+              availabilityResult={availabilityResult}
+              setSelectedRooms={setSelectedRooms}
+              selectedRooms={selectedRooms}
+            />
+          ) : (
+            <GuestForm />
+          )}
         </div>
       )}
       <div className={styles.leftContainer}>
@@ -296,5 +172,150 @@ export default function RoomSelection() {
         </div>
       </div>
     </div>
+  );
+}
+
+function RoomSelection({
+  availabilityResult,
+  setSelectedRooms,
+  selectedRooms,
+}) {
+  const roomAmenities = [
+    {
+      id: 2,
+      amenities: ["wifi", "breakfast", "tv", "air_conditioning", "heating"],
+    },
+    {
+      id: 7,
+      amenities: ["wifi", "breakfast", "tv", "air_conditioning", "heating"],
+    },
+    {
+      id: 10,
+      amenities: [
+        "wifi",
+        "breakfast",
+        "tv",
+        "air_conditioning",
+        "heating",
+        "kitchen",
+      ],
+    },
+  ];
+
+  const roomImages = [
+    {
+      id: 2,
+      images: [
+        "https://placehold.co/300",
+        "https://placehold.co/300",
+        "https://placehold.co/300",
+      ],
+    },
+    {
+      id: 7,
+      images: [
+        "https://placehold.co/300",
+        "https://placehold.co/300",
+        "https://placehold.co/300",
+      ],
+    },
+    {
+      id: 10,
+      images: [
+        "https://placehold.co/300",
+        "https://placehold.co/300",
+        "https://placehold.co/300",
+      ],
+    },
+  ];
+
+  const handleRoomSelection = e => {
+    const { name, value } = e.target;
+    const roomId = parseInt(name);
+    const quantity = parseInt(value);
+    if (quantity === 0) {
+      setSelectedRooms(prevRooms =>
+        prevRooms.filter(room => room.id !== roomId)
+      );
+      return;
+    }
+    const existingRoom = selectedRooms.find(room => room.id === roomId);
+    if (existingRoom) {
+      setSelectedRooms(prevRooms =>
+        prevRooms.map(room =>
+          room.id === roomId ? { ...room, quantity: quantity } : room
+        )
+      );
+    } else {
+      setSelectedRooms(prevRooms => [...prevRooms, { id: roomId, quantity }]);
+    }
+  };
+  return (
+    <>
+      {availabilityResult.roomList.map(room => {
+        const roomImage = roomImages.find(image => image.id === room.id);
+        const roomAmenity = roomAmenities.find(
+          amenity => amenity.id === room.id
+        );
+        const availability = room.availability;
+
+        return (
+          <div key={room.id} className={styles.roomCard}>
+            <div className={styles.roomDetails}>
+              <div className={styles.roomImage}>
+                {/* Here we need an image slider, not a single image */}
+                <img
+                  src={
+                    roomImage && roomImage.images.length > 0
+                      ? roomImage.images[0]
+                      : "https://placehold.co/400"
+                  }
+                  alt={room.description}
+                />
+              </div>
+              <div className={styles.details}>
+                <h3>{room.description}</h3>
+                <span>
+                  {room.type === "private" ? "Private" : "Dormitory"}{" "}
+                  {room.max_occupancy}
+                </span>
+                <ul>
+                  {roomAmenity &&
+                    roomAmenity.amenities.map((amenity, index) => (
+                      <li key={index}>&#x1F5F8; {amenity}</li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+            <div className={styles.priceDetails}>
+              <div className={styles.rates}>
+                <h4>Standard Rate</h4>
+                <p>Deposits:</p>
+                <p>Cancellations:</p>
+              </div>
+
+              <div className={styles.price}>
+                <p>
+                  {availabilityResult.currencies.base_currency} {room.totalRate}
+                </p>
+                <span>{availabilityResult.totalNights} nights</span>
+                <select
+                  id="roomSelection"
+                  name={room.id}
+                  onChange={handleRoomSelection}
+                >
+                  <option value={0}>Select</option>
+                  {Array.from({ length: availability }, (_, index) => (
+                    <option key={index} value={index + 1}>
+                      {index + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </>
   );
 }

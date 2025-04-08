@@ -2,12 +2,27 @@ import "./App.css";
 import { useState } from "react";
 import Header from "./components/Header/Header.jsx";
 import DateRangePicker from "./components/DateRangePicker/DateRangePicker.jsx";
-import RoomSelection from "./components/RoomSelection/RoomSelection.jsx";
+import Booking from "./components/Booking/Booking.jsx";
 import PropertyInfo from "./components/PropertyInfo/PropertyInfo.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 
 function App() {
   const [index, setIndex] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [reservation, setReservation] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    city: "",
+    street: "",
+    postalCode: "",
+    countryCode: "",
+    selectedRooms: [],
+    checkIn: "",
+    checkOut: "",
+    specialRequest: "",
+  });
 
   const propertyInfo = {
     id: 10,
@@ -79,7 +94,7 @@ function App() {
 
   const contentToDisplay = [
     <DateRangePicker setIndex={setIndex} key="dateRangePicker" />,
-    <RoomSelection
+    <Booking
       propertyInfo={propertyInfo}
       policies={policies}
       key="roomSelection"
