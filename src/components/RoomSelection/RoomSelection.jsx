@@ -1,41 +1,63 @@
 import styles from "./RoomSelection.module.css";
 import { formatToLocaleDate } from "../../utils/dateFormattingHelper";
+import { useEffect, useState } from "react";
+import Spinner from "../Spinner/Spinner";
 
 export default function RoomSelection() {
-  const availabilityResult = {
-    totalNights: 3,
+  const [availabilityResult, setAvailabilityResult] = useState({
+    totalNights: 0,
     currencies: {
-      id: 10,
-      base_currency: "USD",
-      payment_currency: "ARS",
+      id: 0,
+      base_currency: "",
+      payment_currency: "",
     },
+    taxes: 0,
     paymentPolicies: {
-      advance_payment_required: 1,
-      deposit_amount: "0.35",
+      advance_payment_required: 0,
+      deposit_amount: "",
     },
-    roomList: [
-      {
-        id: 2,
-        description: "Dormitory - 4max",
-        type: "dorm",
-        gender: "mixed",
-        max_occupancy: 4,
-        inventory: 2,
-        availability: 6,
-        totalRate: 45,
+    roomList: [],
+  });
+  const [loading, setLoading] = useState(false);
+  const [selectedRooms, setSelectedRooms] = useState([]);
+
+  useEffect(() => {
+    setAvailabilityResult({
+      totalNights: 3,
+      currencies: {
+        id: 10,
+        base_currency: "USD",
+        payment_currency: "ARS",
       },
-      {
-        id: 7,
-        description: "Private room 2max (doble bed)",
-        type: "private",
-        gender: "mixed",
-        max_occupancy: 2,
-        inventory: 2,
-        availability: 1,
-        totalRate: 225,
+      taxes: 0.21,
+      paymentPolicies: {
+        advance_payment_required: 1,
+        deposit_amount: "0.35",
       },
-    ],
-  };
+      roomList: [
+        {
+          id: 2,
+          description: "Dormitory - 4max",
+          type: "dorm",
+          gender: "mixed",
+          max_occupancy: 4,
+          inventory: 2,
+          availability: 6,
+          totalRate: 45,
+        },
+        {
+          id: 7,
+          description: "Private room 2max (doble bed)",
+          type: "private",
+          gender: "mixed",
+          max_occupancy: 2,
+          inventory: 2,
+          availability: 1,
+          totalRate: 225,
+        },
+      ],
+    });
+  }, []);
 
   const roomAmenities = [
     {
@@ -88,6 +110,40 @@ export default function RoomSelection() {
 
   const checkIn = formatToLocaleDate("2025-01-25");
   const checkOut = formatToLocaleDate("2025-01-28");
+
+  const handleRoomSelection = e => {
+    const { name, value } = e.target;
+    const roomId = parseInt(name);
+    const quantity = parseInt(value);
+    if (quantity === 0) {
+      setSelectedRooms(prevRooms =>
+        prevRooms.filter(room => room.id !== roomId)
+      );
+      return;
+    }
+    const existingRoom = selectedRooms.find(room => room.id === roomId);
+    if (existingRoom) {
+      setSelectedRooms(prevRooms =>
+        prevRooms.map(room =>
+          room.id === roomId ? { ...room, quantity: quantity } : room
+        )
+      );
+    } else {
+      setSelectedRooms(prevRooms => [...prevRooms, { id: roomId, quantity }]);
+    }
+  };
+
+  if (loading) return <Spinner />;
+
+  const subtotal = availabilityResult?.roomList.reduce((acc, room) => {
+    const selectedRoom = selectedRooms.find(
+      selected => selected.id === room.id
+    );
+    return acc + (selectedRoom ? room.totalRate * selectedRoom.quantity : 0);
+  }, 0);
+
+  const taxes = subtotal * availabilityResult.taxes;
+  const total = subtotal + taxes;
   return (
     <div className={styles.roomSelection}>
       {availabilityResult.roomList.length === 0 ? (
@@ -145,8 +201,12 @@ export default function RoomSelection() {
                       {room.totalRate}
                     </p>
                     <span>{availabilityResult.totalNights} nights</span>
-                    <select name="roomSelection" id="roomSelection">
-                      <option value="select">Select</option>
+                    <select
+                      id="roomSelection"
+                      name={room.id}
+                      onChange={handleRoomSelection}
+                    >
+                      <option value={0}>Select</option>
                       {Array.from({ length: availability }, (_, index) => (
                         <option key={index} value={index + 1}>
                           {index + 1}
@@ -168,10 +228,71 @@ export default function RoomSelection() {
             <span>&#x27A1;</span>
             <p>{checkOut}</p>
           </div>
-
           <span className={styles.totalNights}>
             {availabilityResult.totalNights} nights
           </span>
+        </div>
+        <div className={styles.rooms}>
+          <h2>Price Details</h2>
+          <ul>
+            {selectedRooms.map(room => {
+              const roomDetails = availabilityResult.roomList.find(
+                item => item.id === room.id
+              );
+              return (
+                <li key={room.id}>
+                  <p>
+                    {room.quantity} x {roomDetails.description}
+                  </p>
+                  <span>
+                    {availabilityResult.currencies.base_currency}{" "}
+                    {roomDetails.totalRate * room.quantity}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className={styles.total}>
+          <div>
+            <h3>Subtotal</h3>
+            <span>
+              {availabilityResult.currencies.base_currency}{" "}
+              {availabilityResult.roomList.reduce((acc, room) => {
+                const selectedRoom = selectedRooms.find(
+                  selected => selected.id === room.id
+                );
+                return (
+                  acc +
+                  (selectedRoom ? room.totalRate * selectedRoom.quantity : 0)
+                );
+              }, 0)}
+            </span>
+          </div>
+          <div>
+            <h3>Taxes</h3>
+            <span>
+              {availabilityResult.currencies.base_currency} {taxes.toFixed(2)}
+            </span>
+          </div>
+          <div>
+            <h3>Total</h3>
+            <span>
+              {availabilityResult.currencies.base_currency} {total}
+            </span>
+          </div>
+          <div>
+            <h3>Deposit</h3>
+            <span>
+              {availabilityResult.currencies.base_currency}{" "}
+              {(
+                total * availabilityResult.paymentPolicies.deposit_amount
+              ).toFixed(2)}
+            </span>
+          </div>
+        </div>
+        <div className={styles.buttonContainer}>
+          <button className={styles.button}>Continue</button>
         </div>
       </div>
     </div>

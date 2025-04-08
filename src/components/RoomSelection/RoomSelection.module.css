@@ -1,5 +1,5 @@
 .roomSelection {
-  padding: 1rem;
+  padding: 1rem 5rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1rem;
@@ -12,14 +12,13 @@
 }
 
 .leftContainer {
-  border: 1px solid #ccc;
   border-radius: 8px;
+  padding: 0 1rem;
 }
 
 .roomCard {
   display: flex;
   flex-direction: column;
-  border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 1rem;
 }
@@ -110,7 +109,94 @@
 
 .totalNights {
   font-size: 0.75rem;
-  border: 1px solid #ccc;
+  background-color: #111;
+  color: #fff;
+  font-weight: bold;
   padding: 5px 8px;
   border-radius: 8px;
+}
+
+/* Left container - Selected rooms */
+.rooms {
+  border-bottom: 1px solid #dedede;
+  padding: 1rem 0;
+  text-align: left;
+}
+
+.rooms h2 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.rooms ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.rooms ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.rooms ul li p {
+  margin: 0.5rem;
+}
+
+.total {
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: normal;
+  text-align: center;
+}
+
+.total div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.total div h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+
+.total div:nth-child(3) h3,
+.total div:nth-child(3) span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Button container */
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.buttonContainer .button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 0.75rem 2.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.buttonContainer .button:hover {
+  background-color: #2980b9;
 }
