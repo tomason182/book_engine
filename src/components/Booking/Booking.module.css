@@ -1,14 +1,14 @@
 .roomSelection {
-  padding: 1rem 5rem;
+  padding: 1rem 0;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1rem;
-  background-color: #f7f7f7;
 }
 
 .leftContainer,
 .roomCard {
-  background-color: #fff;
+  background-color: var(--background-color-light);
+  border: 1px solid #ccc;
 }
 
 .leftContainer {
@@ -199,4 +199,9 @@
 
 .buttonContainer .button:hover {
   background-color: #2980b9;
+}
+
+.buttonContainer .button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

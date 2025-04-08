@@ -92,7 +92,7 @@ export default function Booking() {
               selectedRooms={selectedRooms}
             />
           ) : (
-            <GuestForm />
+            <GuestForm setIndex={setIndex} />
           )}
         </div>
       )}
@@ -168,7 +168,13 @@ export default function Booking() {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <button className={styles.button}>Continue</button>
+          <button
+            className={styles.button}
+            onClick={() => setIndex(1)}
+            disabled={selectedRooms.length === 0}
+          >
+            {index === 0 ? "Continue" : "Book now"}
+          </button>
         </div>
       </div>
     </div>
@@ -303,8 +309,14 @@ function RoomSelection({
                   id="roomSelection"
                   name={room.id}
                   onChange={handleRoomSelection}
+                  value={
+                    selectedRooms.find(selected => selected.id === room.id)
+                      ? selectedRooms.find(selected => selected.id === room.id)
+                          .quantity
+                      : 0
+                  }
                 >
-                  <option value={0}>Select</option>
+                  <option value={0}>0</option>
                   {Array.from({ length: availability }, (_, index) => (
                     <option key={index} value={index + 1}>
                       {index + 1}
