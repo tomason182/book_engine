@@ -24,6 +24,8 @@ function App() {
     specialRequest: "",
   });
 
+  console.log(reservation);
+
   const propertyInfo = {
     id: 10,
     property_name: "La Casa de Tomas",
@@ -105,6 +107,8 @@ function App() {
       propertyInfo={propertyInfo}
       policies={policies}
       key="roomSelection"
+      setReservation={setReservation}
+      reservation={reservation}
     />,
   ];
 

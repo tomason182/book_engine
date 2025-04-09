@@ -5,7 +5,7 @@ import Spinner from "../Spinner/Spinner";
 import GuestForm from "../GuestForm/GuestForm";
 import PropTypes from "prop-types";
 
-export default function Booking() {
+export default function Booking({ setReservation, reservation }) {
   const [availabilityResult, setAvailabilityResult] = useState({
     totalNights: 0,
     currencies: {
@@ -22,7 +22,7 @@ export default function Booking() {
   });
   const [loading, setLoading] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState([]);
-  const [index, setIndex] = useState(1);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     setAvailabilityResult({
@@ -62,8 +62,25 @@ export default function Booking() {
     });
   }, []);
 
-  const checkIn = formatToLocaleDate("2025-01-25");
-  const checkOut = formatToLocaleDate("2025-01-28");
+  const formattedCheckIn = formatToLocaleDate(reservation.checkIn);
+  const formattedCheckOut = formatToLocaleDate(reservation.checkOut);
+
+  function handleClick() {
+    if (index === 0) {
+      setReservation(prev => ({
+        ...prev,
+        selectedRooms,
+      }));
+
+      setIndex(1);
+    } else {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        alert("Booking confirmed!");
+      }, 2000);
+    }
+  }
 
   if (loading) return <Spinner />;
 
@@ -92,7 +109,11 @@ export default function Booking() {
               selectedRooms={selectedRooms}
             />
           ) : (
-            <GuestForm setIndex={setIndex} />
+            <GuestForm
+              setIndex={setIndex}
+              setReservation={setReservation}
+              reservation={reservation}
+            />
           )}
         </div>
       )}
@@ -100,9 +121,9 @@ export default function Booking() {
         <div className={styles.summary}>
           <h1>Reservation summary</h1>
           <div className={styles.dates}>
-            <p>{checkIn}</p>
+            <p>{formattedCheckIn}</p>
             <span>&#x27A1;</span>
-            <p>{checkOut}</p>
+            <p>{formattedCheckOut}</p>
           </div>
           <span className={styles.totalNights}>
             {availabilityResult.totalNights} nights
@@ -170,7 +191,7 @@ export default function Booking() {
         <div className={styles.buttonContainer}>
           <button
             className={styles.button}
-            onClick={() => setIndex(1)}
+            onClick={handleClick}
             disabled={selectedRooms.length === 0}
           >
             {index === 0 ? "Continue" : "Book now"}
@@ -331,3 +352,26 @@ function RoomSelection({
     </>
   );
 }
+
+Booking.PropTypes = {
+  setReservation: PropTypes.func.isRequired,
+  reservation: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    phoneNumber: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    street: PropTypes.string.isRequired,
+    postalCode: PropTypes.string.isRequired,
+    countryCode: PropTypes.string.isRequired,
+    specialRequest: PropTypes.string,
+    checkIn: PropTypes.string.isRequired,
+    checkOut: PropTypes.string.isRequired,
+    selectedRooms: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        quantity: PropTypes.number.isRequired,
+      })
+    ),
+  }).isRequired,
+};

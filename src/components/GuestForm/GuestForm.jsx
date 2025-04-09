@@ -1,9 +1,18 @@
 import styles from "./GuestForm.module.css";
+import PropTypes from "prop-types";
 
-export default function GuestForm({ setIndex }) {
+export default function GuestForm({ setIndex, setReservation, reservation }) {
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setReservation(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
   function onClick() {
     setIndex(0);
   }
+
   return (
     <form className={styles.guestForm}>
       <div className={styles.header}>
@@ -21,6 +30,8 @@ export default function GuestForm({ setIndex }) {
             type="text"
             name="firstName"
             className={styles.input}
+            onChange={handleChange}
+            value={reservation.firstName}
             required
             aria-required
           />
@@ -35,6 +46,8 @@ export default function GuestForm({ setIndex }) {
             type="text"
             name="lastName"
             className={styles.input}
+            onChange={handleChange}
+            value={reservation.lastName}
             required
             aria-required
           />
@@ -49,6 +62,8 @@ export default function GuestForm({ setIndex }) {
             type="email"
             name="email"
             className={styles.input}
+            onChange={handleChange}
+            value={reservation.email}
             required
             aria-required
           />
@@ -60,7 +75,7 @@ export default function GuestForm({ setIndex }) {
             <div>
               Phone number <span className={styles.label}>*</span>
             </div>
-            <select name="phoneCode" id="">
+            <select name="phoneCode">
               <option value="ar">+549</option>
               <option value="cl">+569</option>
               <option value="uy">+598</option>
@@ -83,7 +98,13 @@ export default function GuestForm({ setIndex }) {
           <div>
             Address <span className={styles.label}>*</span>
           </div>
-          <input type="text" name="Street" className={styles.input} />
+          <input
+            type="text"
+            name="street"
+            className={styles.input}
+            onChange={handleChange}
+            value={reservation.street}
+          />
         </label>
       </div>
       <div className={styles.formGroup}>
@@ -91,13 +112,25 @@ export default function GuestForm({ setIndex }) {
           <div>
             City <span className={styles.label}>*</span>
           </div>
-          <input type="text" name="city" className={styles.input} />
+          <input
+            type="text"
+            name="city"
+            className={styles.input}
+            onChange={handleChange}
+            value={reservation.city}
+          />
         </label>
       </div>
       <div className={styles.formGroup}>
         <label>
           <div>Postal code</div>
-          <input type="text" name="postalCode" className={styles.input} />
+          <input
+            type="text"
+            name="postalCode"
+            className={styles.input}
+            value={reservation.postalCode}
+            onChange={handleChange}
+          />
         </label>
       </div>
       <div className={styles.formGroup}>
@@ -105,7 +138,12 @@ export default function GuestForm({ setIndex }) {
           <div>
             Country <span className={styles.label}>*</span>
           </div>
-          <select name="country">
+          <select
+            name="countryCode"
+            value={reservation.countryCode}
+            onChange={handleChange}
+            className={styles.input}
+          >
             <option value="ar">Argentina</option>
             <option value="cl">Chile</option>
             <option value="uy">Uruguay</option>
@@ -115,3 +153,8 @@ export default function GuestForm({ setIndex }) {
     </form>
   );
 }
+
+GuestForm.propTypes = {
+  setIndex: PropTypes.func.isRequired,
+  setReservation: PropTypes.func.isRequired,
+};
