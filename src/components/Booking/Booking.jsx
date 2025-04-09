@@ -234,7 +234,7 @@ function RoomSelection({
     {
       id: 2,
       images: [
-        "https://placehold.co/300",
+        "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         "https://placehold.co/300",
         "https://placehold.co/300",
       ],
@@ -242,7 +242,7 @@ function RoomSelection({
     {
       id: 7,
       images: [
-        "https://placehold.co/300",
+        "https://plus.unsplash.com/premium_photo-1679088034974-2c9c01d59992?q=80&w=1376&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         "https://placehold.co/300",
         "https://placehold.co/300",
       ],
