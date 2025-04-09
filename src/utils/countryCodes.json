@@ -1,5 +1,4 @@
 [
-  { "value": "", "label": "Seleccione un pais o región", "code": "" },
   { "value": "xa", "label": "Abjasia,Georgia", "code": "+995" },
   { "value": "af", "label": "Afganistán", "code": "+93" },
   { "value": "al", "label": "Albania", "code": "+355" },
@@ -11,7 +10,7 @@
   { "value": "aq", "label": "Antártida", "code": "+672" },
   { "value": "sa", "label": "Arabia Saudí", "code": "+966" },
   { "value": "dz", "label": "Argelia", "code": "+213" },
-  { "value": "ar", "label": "Argentina", "code": "+54" },
+  { "value": "ar", "label": "Argentina", "code": "+549" },
   { "value": "am", "label": "Armenia", "code": "+374" },
   { "value": "aw", "label": "Aruba", "code": "+297" },
   { "value": "au", "label": "Australia", "code": "+61" },

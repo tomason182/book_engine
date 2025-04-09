@@ -1,5 +1,6 @@
 import styles from "./GuestForm.module.css";
 import PropTypes from "prop-types";
+import countryCodes from "../../utils/countryCodes.json";
 
 export default function GuestForm({ setIndex, setReservation, reservation }) {
   function handleChange(e) {
@@ -11,6 +12,22 @@ export default function GuestForm({ setIndex, setReservation, reservation }) {
   }
   function onClick() {
     setIndex(0);
+  }
+
+  function renderCountryCodes() {
+    return countryCodes.map(country => (
+      <option key={country.value} value={country.value}>
+        {country.label}
+      </option>
+    ));
+  }
+
+  function renderPhoneCodes() {
+    return countryCodes.map(country => (
+      <option key={country.value} value={country.code}>
+        {country.code} - {country.label}
+      </option>
+    ));
   }
 
   return (
@@ -73,21 +90,18 @@ export default function GuestForm({ setIndex, setReservation, reservation }) {
         <div className={styles.formGroup}>
           <label>
             <div>
-              Phone number <span className={styles.label}>*</span>
+              Code
+              <span className={styles.label}>*</span>
             </div>
             <select name="phoneCode">
-              <option value="ar">+549</option>
-              <option value="cl">+569</option>
-              <option value="uy">+598</option>
-              <option value="us">+1</option>
+              <option value="">Select one</option>
+              {renderPhoneCodes()}
             </select>
           </label>
         </div>
         <div className={styles.formGroup}>
           <label>
-            <span className={styles.label} style={{ visibility: "hidden" }}>
-              Phone number
-            </span>
+            <div>Phone number</div>
             <input type="tel" name="phone" className={styles.input} />
           </label>
         </div>
@@ -144,9 +158,8 @@ export default function GuestForm({ setIndex, setReservation, reservation }) {
             onChange={handleChange}
             className={styles.input}
           >
-            <option value="ar">Argentina</option>
-            <option value="cl">Chile</option>
-            <option value="uy">Uruguay</option>
+            <option value="">Select one</option>
+            {renderCountryCodes()}
           </select>
         </label>
       </div>
