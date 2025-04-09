@@ -5,10 +5,11 @@ import DateRangePicker from "./components/DateRangePicker/DateRangePicker.jsx";
 import Booking from "./components/Booking/Booking.jsx";
 import PropertyInfo from "./components/PropertyInfo/PropertyInfo.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import Spinner from "./components/Spinner/Spinner.jsx";
+import usePropertyInfo from "./dataProvider/PropertyDataProvider.jsx";
 
 function App() {
   const [index, setIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [reservation, setReservation] = useState({
     firstName: "",
     lastName: "",
@@ -25,9 +26,9 @@ function App() {
     specialRequest: "",
   });
 
-  console.log(reservation);
+  const { propertyInfo, loading, error } = usePropertyInfo();
 
-  const propertyInfo = {
+  const propertyInfo1 = {
     id: 10,
     property_name: "La Casa de Tomas",
     address: {
@@ -112,6 +113,10 @@ function App() {
       reservation={reservation}
     />,
   ];
+
+  if (loading) return <Spinner />;
+  if (error) return <p>Error: NetWork error occurred</p>;
+  if (!propertyInfo) return <p>No property information available</p>;
 
   return (
     <>
