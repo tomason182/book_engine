@@ -64,6 +64,9 @@ export default function Booking({ setReservation, reservation }) {
 
   const formattedCheckIn = formatToLocaleDate(reservation.checkIn);
   const formattedCheckOut = formatToLocaleDate(reservation.checkOut);
+  const totalNights =
+    (new Date(reservation.checkOut) - new Date(reservation.checkIn)) /
+    (1000 * 3600 * 24);
 
   function handleClick() {
     if (index === 0) {
@@ -125,9 +128,7 @@ export default function Booking({ setReservation, reservation }) {
             <span>&#x27A1;</span>
             <p>{formattedCheckOut}</p>
           </div>
-          <span className={styles.totalNights}>
-            {availabilityResult.totalNights} nights
-          </span>
+          <span className={styles.totalNights}>{totalNights} nights</span>
         </div>
         <div className={styles.rooms}>
           <h2>Price Details</h2>
