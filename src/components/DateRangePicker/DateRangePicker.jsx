@@ -69,13 +69,11 @@ export default function DateRangePicker({
 
   const handleSubmit = e => {
     e.preventDefault();
-    const checkInDate = e.target.checkIn.value;
-    const checkOutDate = e.target.checkOut.value;
 
     setReservation(prev => ({
       ...prev,
-      checkIn: checkInDate,
-      checkOut: checkOutDate,
+      checkIn: dates.checkIn,
+      checkOut: dates.checkOut,
     }));
     setIndex(1);
   };
