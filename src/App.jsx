@@ -7,7 +7,7 @@ import PropertyInfo from "./components/PropertyInfo/PropertyInfo.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 
 function App() {
-  const [index, setIndex] = useState(1);
+  const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [reservation, setReservation] = useState({
     firstName: "",
@@ -48,7 +48,7 @@ function App() {
 
   const policies = {
     reservationPolicies: {
-      min_length_stay: 1,
+      min_length_stay: 2,
       max_length_stay: 0,
       min_advance_booking: 1,
       check_in_from: "11:00",
@@ -93,7 +93,14 @@ function App() {
   };
 
   const contentToDisplay = [
-    <DateRangePicker setIndex={setIndex} key="dateRangePicker" />,
+    <DateRangePicker
+      setIndex={setIndex}
+      key="dateRangePicker"
+      setReservation={setReservation}
+      minAdvanceBooking={policies.reservationPolicies.min_advance_booking}
+      minLengthStay={policies.reservationPolicies.min_length_stay}
+      maxLengthStay={policies.reservationPolicies.max_length_stay}
+    />,
     <Booking
       propertyInfo={propertyInfo}
       policies={policies}
