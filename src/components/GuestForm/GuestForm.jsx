@@ -5,6 +5,17 @@ import countryCodes from "../../utils/countryCodes.json";
 export default function GuestForm({ setIndex, setReservation, reservation }) {
   function handleChange(e) {
     const { name, value } = e.target;
+
+    if (name === "phoneCode") {
+      const selectedOption = e.target.options[e.target.selectedIndex];
+      const countryCode = selectedOption.getAttribute("data-value");
+      setReservation(prev => ({
+        ...prev,
+        phoneCode: value,
+        countryCode,
+      }));
+      return;
+    }
     setReservation(prev => ({
       ...prev,
       [name]: value,
@@ -24,7 +35,11 @@ export default function GuestForm({ setIndex, setReservation, reservation }) {
 
   function renderPhoneCodes() {
     return countryCodes.map(country => (
-      <option key={country.value} value={country.code}>
+      <option
+        key={country.value}
+        value={country.code}
+        data-value={country.value}
+      >
         {country.code} - {country.label}
       </option>
     ));
@@ -93,7 +108,12 @@ export default function GuestForm({ setIndex, setReservation, reservation }) {
               Code
               <span className={styles.label}>*</span>
             </div>
-            <select name="phoneCode">
+            <select
+              name="phoneCode"
+              value={reservation.phoneCode}
+              onChange={handleChange}
+              className={styles.input}
+            >
               <option value="">Select one</option>
               {renderPhoneCodes()}
             </select>
@@ -102,7 +122,12 @@ export default function GuestForm({ setIndex, setReservation, reservation }) {
         <div className={styles.formGroup}>
           <label>
             <div>Phone number</div>
-            <input type="tel" name="phone" className={styles.input} />
+            <input
+              type="tel"
+              name="phoneNumber"
+              onChange={handleChange}
+              className={styles.input}
+            />
           </label>
         </div>
       </div>

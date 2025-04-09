@@ -13,6 +13,7 @@ function App() {
     firstName: "",
     lastName: "",
     email: "",
+    phoneCode: "",
     phoneNumber: "",
     city: "",
     street: "",
