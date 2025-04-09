@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Spinner from "../Spinner/Spinner";
 import GuestForm from "../GuestForm/GuestForm";
 import PropTypes from "prop-types";
+import Slider from "../Slider/Slider";
 
 export default function Booking({ setReservation, reservation }) {
   const [availabilityResult, setAvailabilityResult] = useState({
@@ -235,8 +236,8 @@ function RoomSelection({
       id: 2,
       images: [
         "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://placehold.co/300",
-        "https://placehold.co/300",
+        "https://images.unsplash.com/photo-1709805619372-40de3f158e83?q=80&w=1495&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1623625434462-e5e42318ae49?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       ],
     },
     {
@@ -291,15 +292,7 @@ function RoomSelection({
           <div key={room.id} className={styles.roomCard}>
             <div className={styles.roomDetails}>
               <div className={styles.roomImage}>
-                {/* Here we need an image slider, not a single image */}
-                <img
-                  src={
-                    roomImage && roomImage.images.length > 0
-                      ? roomImage.images[0]
-                      : "https://placehold.co/400"
-                  }
-                  alt={room.description}
-                />
+                <Slider imageList={roomImage.images} />
               </div>
               <div className={styles.details}>
                 <h3>{room.description}</h3>
